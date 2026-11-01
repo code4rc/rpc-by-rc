@@ -1,0 +1,13 @@
+{
+  "name": "rpc-by-rc",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "client": "node client/rpc-client.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "discord-rpc": "^4.0.1"
+  }
+}
