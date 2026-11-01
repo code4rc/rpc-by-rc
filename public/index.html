@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>RPC BY RC</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  background: #10131b;
+  color: white;
+  font-family: Arial;
+  padding: 20px;
+}
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+input {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  background: #202638;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 8px;
+}
+button {
+  width: 100%;
+  padding: 14px;
+  background: #6477ed;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  margin-top: 12px;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>RPC BY RC</h1>
+<p>Custom Discord Rich Presence Dashboard</p>
+
+<input id="key" type="password" placeholder="API Key">
+<input id="details" placeholder="Activity Details">
+<input id="state" placeholder="Activity State">
+<input id="large" placeholder="Large Image Key">
+<input id="ltext" placeholder="Large Image Text">
+<input id="small" placeholder="Small Image Key">
+<input id="stext" placeholder="Small Image Text">
+<input id="label" placeholder="Button Name">
+<input id="url" placeholder="Button HTTPS URL">
+
+<button onclick="save()">SAVE RPC</button>
+<p id="status"></p>
+</div>
+
+<script>
+async function save() {
+ const status = document.getElementById("status");
+ const key = document.getElementById("key").value;
+
+ try {
+  const response = await fetch("/api/activity", {
+   method: "POST",
+   headers: {
+    "Content-Type": "application/json",
+    "x-rpc-key": key
+   },
+   body: JSON.stringify({
+    details: document.getElementById("details").value,
+    state: document.getElementById("state").value,
+    largeImageKey: document.getElementById("large").value,
+    largeImageText: document.getElementById("ltext").value,
+    smallImageKey: document.getElementById("small").value,
+    smallImageText: document.getElementById("stext").value,
+    buttons: [{
+     label: document.getElementById("label").value,
+     url: document.getElementById("url").value
+    }]
+   })
+  });
+
+  const result = await response.json();
+  if (!response.ok) throw new Error(result.error);
+  status.innerText = "RPC Saved Successfully!";
+ } catch (e) {
+  status.innerText = "Error: " + e.message;
+ }
+}
+</script>
+</body>
+</html>
